@@ -1,6 +1,6 @@
 package Net::EC2::Tiny;
 {
-  $Net::EC2::Tiny::VERSION = '0.01';
+  $Net::EC2::Tiny::VERSION = '0.02';
 }
 
 use 5.014;
@@ -11,10 +11,7 @@ use MIME::Base64 qw(encode_base64);
 use HTTP::Tiny;
 use Carp qw(croak);
 
-use URI;
-use URI::Escape qw(uri_escape_utf8);
 use XML::Simple qw(XMLin);
-
 use Moo;
 
 # ABSTRACT: Basic EC2 client
@@ -57,6 +54,15 @@ has 'ua'                 => (
     }
 );
 
+has '_base_url_host'     => (
+    is          => 'ro',
+    required    => 1,
+    lazy        => 1,
+    default     => sub {
+        ($_[0]->ua->_split_url($_[0]->base_url))[1]
+    }
+);
+
 sub _timestamp {
     return strftime("%Y-%m-%dT%H:%M:%SZ",gmtime);
 }
@@ -79,18 +85,11 @@ sub _sign {
     $sign_hash{SignatureMethod}     = "HmacSHA256";
 
     my $sign_this = "POST\n";
-    my $uri = URI->new($self->base_url);
-
-    $sign_this .= lc($uri->host) . "\n";
+    $sign_this .= $self->_base_url_host . "\n";
     $sign_this .= "/\n";
 
-    my @signing_elements;
 
-    foreach my $key (sort keys %sign_hash) {
-        push @signing_elements, uri_escape_utf8($key)."=".uri_escape_utf8($sign_hash{$key});
-    }
-
-    $sign_this .= join "&", @signing_elements;
+    $sign_this .= $self->ua->www_form_urlencode(\%sign_hash);
 
     warn "QUERY TO SIGN: $sign_this" if $self->debug;
     my $encoded = encode_base64(hmac_sha256($sign_this, $self->AWSSecretKey), '');
@@ -135,6 +134,7 @@ sub send {
 1;
 
 __END__
+
 =pod
 
 =head1 NAME
@@ -143,7 +143,7 @@ Net::EC2::Tiny - Basic EC2 client
 
 =head1 VERSION
 
-version 0.01
+version 0.02
 
 =head1 SYNOPSIS
 
@@ -162,7 +162,7 @@ version 0.01
 
   my $xml = $ec2->send(
         Action       => 'DescribeRegions',
-        RegionName.1 => 'us-east-1',
+      'RegionName.1' => 'us-east-1',
   );
 
   # prints ec2.us-east-1.amazonaws.com
@@ -258,4 +258,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

@@ -23,10 +23,9 @@ my %WriteMakefileArgs = (
     "IO::Socket::SSL" => "1.83",
     "Moo" => "1.000008",
     "Net::SSLeay" => "1.52",
-    "URI" => "1.60",
     "XML::Simple" => "2.20"
   },
-  "VERSION" => "0.01",
+  "VERSION" => "0.02",
   "test" => {
     "TESTS" => "t/*.t"
   }

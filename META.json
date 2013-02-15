@@ -4,7 +4,7 @@
       "Mark Allen <mrallen1@yahoo.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 4.300028, CPAN::Meta::Converter version 2.120630",
+   "generated_by" : "Dist::Zilla version 4.300028, CPAN::Meta::Converter version 2.120921",
    "license" : [
       "perl_5"
    ],
@@ -24,7 +24,6 @@
             "IO::Socket::SSL" : "1.83",
             "Moo" : "1.000008",
             "Net::SSLeay" : "1.52",
-            "URI" : "1.60",
             "XML::Simple" : "2.20",
             "perl" : "5.014"
          }
@@ -43,6 +42,6 @@
          "web" : "https://github.com/mrallen1/Net-EC2-Tiny"
       }
    },
-   "version" : "0.01"
+   "version" : "0.02"
 }
 
