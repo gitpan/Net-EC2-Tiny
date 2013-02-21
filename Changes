@@ -1,5 +1,8 @@
 Change history for Net-EC2-Tiny
 
+0.03        2013-02-21
+            Decoupled _sign, _process and _request (xsawyerx@cpan.org)
+
 0.02        2013-02-15
             Use more of the functions in HTTP::Tiny to
             eliminate URI and URI::Escape dependencies

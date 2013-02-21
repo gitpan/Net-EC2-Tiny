@@ -22,4 +22,4 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Net-EC2-Tiny
   homepage: https://metacpan.org/dist/Net-EC2-Tiny
   repository: git://github.com/mrallen1/Net-EC2-Tiny.git
-version: 0.02
+version: 0.03
